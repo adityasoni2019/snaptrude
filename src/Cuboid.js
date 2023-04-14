@@ -1,11 +1,9 @@
 import React, { useRef } from "react";
 import { Engine, Scene } from "react-babylonjs";
-import { Vector3, Color3, Vector4 } from "@babylonjs/core";
+import { Vector3, Color3, Vector4, Color4 } from "@babylonjs/core";
 import { useEffect } from "react";
-import { Texture }  from "@babylonjs/core";
+import { Texture } from "@babylonjs/core";
 
-// var texture = new BABYLON.Texture(, scene);
-//     mat.diffuseTexture = texture;
 
 var columns = 6; // 6 columns
 var rows = 1; // 1 row
@@ -23,10 +21,9 @@ const SpinningBox = (propss) => {
   const materialRef = useRef();
   useEffect(() => {
     if (propss.dataUrl_second) {
+
       const texture = new Texture(propss.dataUrl_second, Scene.current);
-      // const texture = new BABYLON.Texture(propss.dataUrl_second, Scene);
       materialRef.current.diffuseTexture = texture;
-      // setImageUrl(propss.dataUrl_second);
     }
   }, [propss.dataUrl_second]);
 
@@ -34,7 +31,6 @@ const SpinningBox = (propss) => {
 
     <box
       name={propss.name}
-
       size={2}
       position={propss.position}
       height={1}
@@ -43,22 +39,19 @@ const SpinningBox = (propss) => {
       faceUV={faceUV}
       wrap
     >
-
-      <standardMaterial ref={materialRef}>
-        {console.log("dataurl from spinning boxes", propss.dataUrl_second)}
-        {/* <texture url={imageUrl} assignTo={"diffuseTexture"} /> */}
-      </standardMaterial>
+      <standardMaterial ref={materialRef} />
     </box>
 
   );
 };
 
 const SceneWithSpinningBoxes = (props) => {
+
   return (
 
-    <div >
+    <div className="SceneWithSpinningBoxes-css" style={{ height: "100%", border: "2px solid #FF5274", borderRadius: "10px", overflow: "hidden" }}>
       <Engine antialias adaptToDeviceRatio canvasId="babylonJS">
-        <Scene>
+        <Scene clearColor={new Color4(1, 0.9568627450980392, 0.9647058823529412, 1)} >
           <arcRotateCamera
             name="camera1"
             target={Vector3.Zero()}
@@ -66,18 +59,24 @@ const SceneWithSpinningBoxes = (props) => {
             beta={Math.PI / 4}
             radius={2}
           />
-          {console.log("dataurl from scenes with spinning boxes", props.dataUrl)}
 
           <hemisphericLight
             name="light1"
-            intensity={50}
+            intensity={5}
             direction={Vector3.Up()}
           />
 
+          <hemisphericLight
+            name="light2"
+            intensity={5}
+            direction={Vector3.Down()}
+          />
+
+          
           <SpinningBox
             name="left"
             position={new Vector3(0, 0, 0)}
-            color={Color3.FromHexString("#EEB5EB")}
+            color={Color3.FromHexString("#FFFFFF")}
             dataUrl_second={props.dataUrl}
           />
 

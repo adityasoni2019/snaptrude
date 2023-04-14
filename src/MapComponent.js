@@ -3,12 +3,13 @@ import GoogleMapReact from 'google-map-react';
 import html2canvas from "html2canvas";
 import { useState } from "react";
 import SceneWithSpinningBoxes from "./Cuboid";
-
+import './MapComponent.css'
 
 function MapComponent() {
 
-  const [dataUrl, setDataUrl] = useState("https://images.unsplash.com/photo-1488372759477-a7f4aa078cb6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8aW1hZ2V8ZW58MHx8MHx8&auto=format&fit=crop&w=600&q=60");
-  const [counter, setCounter] = useState(0);
+  const apiKey = 'AIzaSyALBkRPKCPCe2LcghVM4pCBkSdVLfyFFRo';
+
+  const [dataUrl, setDataUrl] = useState("https://garden.spoonflower.com/c/12307083/p/f/m/YOMUsozN5ljCavv-GHLcu0JFp439AvptoAm10sBhhRIrm7-KkoBd/Solid%20Pink%20Fresh%20Blush%20EFDACE%20Plain%20Fabric%20Solid%20Coordinate.jpg");
 
   const defaultProps = {
     center: {
@@ -19,48 +20,40 @@ function MapComponent() {
   };
 
   const handleScreenshot = () => {
-    // console.log("this is the map component", document.getElementById('map'));
+
     html2canvas(document.getElementById('map'), {
       letterRendering: 1,
       allowTaint: true,
       useCORS: true
     }).then(canvas => {
-
-      // the main logic.
       setDataUrl(canvas.toDataURL());
-      setCounter(counter + 1);
-      // document.body.appendChild(canvas);
-
     })
 
   }
   return (
-    <div style={{ width: '100%', display: "flex", flexDirection: "column" }} id="complete">
 
-      {/* // Important! Always set the container height explicitly */}
-      <div style={{ height: '95vh', width: '100%', display: "flex" }} >
+    <div className="main-container">
+      <div id="map" className="left-panel" style={{}}>
+        <GoogleMapReact
+          bootstrapURLKeys={{ key: apiKey }}
+          defaultCenter={defaultProps.center}
+          defaultZoom={defaultProps.zoom}
+          attribute="allowTaint"
+          type="boolean"
+          default="false"
+        />
+      </div>
 
-        <div id="map" style={{ height: '95vh', width: '100%', display: "flex" }}>
-          <GoogleMapReact
-            bootstrapURLKeys={{ key: "" }}
-            defaultCenter={defaultProps.center}
-            defaultZoom={defaultProps.zoom}
-            attribute="allowTaint"
-            type="boolean"
-            default="false"
-          />
+      <div className="right-panel">
+        <SceneWithSpinningBoxes dataUrl={dataUrl} />
+        <div
+          onClick={handleScreenshot}
+          className="button"
+        >
+          Take Screenshot
         </div>
-        <SceneWithSpinningBoxes dataUrl={dataUrl} counter = {counter}/>
-        {/* <SceneWithSpinningBoxes2 dataUrl={dataUrl} counter = {counter}/> */}
 
       </div>
-      <button
-        style={{ height: '50px' }}
-        onClick={handleScreenshot}
-      >
-        Take Screenshot
-      </button>
-
     </div>
   );
 }

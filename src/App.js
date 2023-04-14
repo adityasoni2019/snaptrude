@@ -1,9 +1,11 @@
 import './App.css';
 import React from "react";
-import Body from './Body';
+import MapComponent from './MapComponent';
 function App() {
-  return(
-    <Body/>
+  return (
+    <div className='Body'>
+      <MapComponent />
+    </div>
   )
 }
 
