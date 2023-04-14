@@ -1,12 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { Engine, Scene } from "react-babylonjs";
 import { Vector3, Color3, Vector4 } from "@babylonjs/core";
+import { useEffect } from "react";
+import { Texture }  from "@babylonjs/core";
 
 // var texture = new BABYLON.Texture(, scene);
 //     mat.diffuseTexture = texture;
-
-
-
 
 var columns = 6; // 6 columns
 var rows = 1; // 1 row
@@ -21,6 +20,15 @@ for (var i = 0; i < 6; i++) {
 
 const SpinningBox = (propss) => {
 
+  const materialRef = useRef();
+  useEffect(() => {
+    if (propss.dataUrl_second) {
+      const texture = new Texture(propss.dataUrl_second, Scene.current);
+      // const texture = new BABYLON.Texture(propss.dataUrl_second, Scene);
+      materialRef.current.diffuseTexture = texture;
+      // setImageUrl(propss.dataUrl_second);
+    }
+  }, [propss.dataUrl_second]);
 
   return (
 
@@ -35,10 +43,10 @@ const SpinningBox = (propss) => {
       faceUV={faceUV}
       wrap
     >
-      {console.log("dataurl from spinning boxes", propss.dataUrl_second)}
 
-      <standardMaterial>
-        <texture url={propss.dataUrl_second} assignTo={"diffuseTexture"} />
+      <standardMaterial ref={materialRef}>
+        {console.log("dataurl from spinning boxes", propss.dataUrl_second)}
+        {/* <texture url={imageUrl} assignTo={"diffuseTexture"} /> */}
       </standardMaterial>
     </box>
 

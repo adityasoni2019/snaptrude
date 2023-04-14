@@ -29,7 +29,7 @@ function MapComponent() {
       // the main logic.
       setDataUrl(canvas.toDataURL());
       setCounter(counter + 1);
-      document.body.appendChild(canvas);
+      // document.body.appendChild(canvas);
 
     })
 
